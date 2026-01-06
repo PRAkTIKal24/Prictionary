@@ -37,7 +37,7 @@ let gameState = {
 // Canvas setup
 let canvas, ctx;
 let isDrawing = false;
-let currentColor = '#013220';  // Default to dark green for dark mode
+let currentColor = '#FFFFFF';  // Default to white
 let currentSize = 5;
 let currentTool = 'pen';
 let lastPoint = null;

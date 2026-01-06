@@ -5,7 +5,7 @@
 }
 
 :root {
-    --primary-color: #6C63FF;
+    --primary-color: #013220;  /* Dark green */
     --secondary-color: #4CAF50;
     --danger-color: #FF5252;
     --background-color: #1a1a1a;  /* Dark background */
@@ -146,8 +146,9 @@ input[type="password"]:focus {
 }
 
 .btn-secondary {
-    background: #E0E0E0;
-    color: var(--text-color);
+    background: #1a1a1a;
+    color: #e0e0e0;
+    border: 2px solid #333;
 }
 
 .btn-small {
