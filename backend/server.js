@@ -9,19 +9,16 @@ const app = express();
 const server = http.createServer(app);
 
 // CORS configuration
+const corsOptions = config.NODE_ENV === 'development' 
+  ? { origin: true, credentials: true } // Allow all origins in development
+  : { origin: config.FRONTEND_URL, methods: ['GET', 'POST'], credentials: true };
+
 const io = new Server(server, {
-  cors: {
-    origin: config.FRONTEND_URL,
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
+  cors: corsOptions,
 });
 
 // Middleware
-app.use(cors({
-  origin: config.FRONTEND_URL,
-  credentials: true,
-}));
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Health check endpoint

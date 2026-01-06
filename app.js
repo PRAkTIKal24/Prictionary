@@ -1,7 +1,17 @@
 // Configuration
-const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:3000'
-  : 'https://your-backend-url.onrender.com'; // Will update this for production
+const BACKEND_URL = (() => {
+    // Check if running in GitHub Codespaces or Gitpod
+    if (window.location.hostname.includes('github.dev') || window.location.hostname.includes('gitpod.io')) {
+        // Replace port 8000 with 3000 in the URL
+        return window.location.origin.replace('-8000.', '-3000.');
+    }
+    // Local development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3000';
+    }
+    // Production (GitHub Pages)
+    return 'https://your-backend-url.onrender.com';
+})();
 
 // Socket.IO connection
 let socket = null;
@@ -47,11 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
  * Connect to backend WebSocket server
  */
 function connectToBackend() {
+    console.log('Attempting to connect to:', BACKEND_URL);
     socket = io(BACKEND_URL, {
         reconnection: true,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
         reconnectionAttempts: 5,
+        transports: ['websocket', 'polling'],
     });
     
     setupSocketListeners();
@@ -62,9 +74,14 @@ function connectToBackend() {
  */
 function setupSocketListeners() {
     socket.on('connect', () => {
-        console.log('Connected to server');
+        console.log('✅ Connected to server! Socket ID:', socket.id);
         gameState.playerId = socket.id;
         showNotification('Connected to server', 'success');
+    });
+    
+    socket.on('connect_error', (error) => {
+        console.error('❌ Connection error:', error);
+        showNotification('Failed to connect to server', 'error');
     });
     
     socket.on('disconnect', () => {
