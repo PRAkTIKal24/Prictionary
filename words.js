@@ -34,7 +34,7 @@ const WORD_LISTS = {
         "Roar", "Dark Horse", "Shake It Off", "Blank Space", "We Are Never Getting Back Together"
     ],
     animals: [
-        "Hot Dog", "Raining Cats and Dogs", "Elephant in the Room", "Lion's Mane", "Tiger Stripes", 
+        "Top Dog", "Raining Cats and Dogs", "Elephant in the Room", "Lion's Mane", "Tiger Stripes", 
         "Bear Hug", "Giraffe Neck", "Zebra Crossing", "Monkey Business", "Gorilla Warfare",
         "Panda Eyes", "Koala Hug", "Kangaroo Pouch", "Rabbit Hole", "Squirrel Cheeks", 
         "Fox in Socks", "Wolf in Sheep's Clothing", "Deer in Headlights", "Moose Antlers",
@@ -64,7 +64,7 @@ const WORD_LISTS = {
         "Hat Trick", "Thinking Cap", "Shirt Off Your Back", "Fancy Pants", "Shoe String Budget",
         "Knock Your Socks Off", "Straight Jacket", "Winter Scarf", "Boxing Gloves", "Ball and Chain",
         "Swing a Bat", "Tennis Racket", "Riding a Bicycle", "Skateboard Tricks", "Scooter Ride",
-        "Car Keys", "Wheels on the Bus", "Train Tracks", "Paper Airplane", "Boat in a Bottle",
+        "Car Keys", "Wheels on the Bus", "Train Tracks", "Flying Saucer", "Boat in a Bottle",
         "Rocket to the Moon", "Helicopter Propeller", "Hot Air Balloon", "Kite in the Wind",
         "Puzzle Pieces", "Roll the Dice", "House of Cards", "Chess Board", "Checkers Game",
         "Air Guitar", "Piano Keys", "Drum Roll", "Violin Bow", "Trumpet Player"
