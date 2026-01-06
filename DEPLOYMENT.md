@@ -91,7 +91,7 @@ Your game is running locally right now!
    ```
    NODE_ENV=production
    PORT=3000
-   FRONTEND_URL=https://praktikaal24.github.io
+   FRONTEND_URL=https://praktikal24.github.io/Prictionary
    MAX_PLAYERS_PER_ROOM=8
    ROOM_INACTIVITY_TIMEOUT=7200000
    PLAYER_TIMEOUT=120000
@@ -137,7 +137,7 @@ Your game is running locally right now!
 
 2. **Wait 1-2 minutes**, then visit:
    ```
-   https://praktikaal24.github.io/Prictionary/
+   https://praktikal24.github.io/Prictionary/
    ```
 
 3. **Your game is live!** 🎉
@@ -149,7 +149,7 @@ Your game is running locally right now!
 After deployment, update Render environment variable:
 
 ```
-FRONTEND_URL=https://praktikaal24.github.io
+FRONTEND_URL=https://praktikal24.github.io/Prictionary
 ```
 
 Then click "Manual Deploy" → "Deploy latest commit" to restart with new settings.
@@ -159,13 +159,13 @@ Then click "Manual Deploy" → "Deploy latest commit" to restart with new settin
 ## 🔗 Share with Friends
 
 ### Option 1: GitHub Pages URL (Default)
-**Game URL:** `https://praktikaal24.github.io/Prictionary/`
+**Game URL:** `https://praktikal24.github.io/Prictionary/`
 
 **Instructions to share:**
 1. Visit the game URL
 2. Create a room with a password
 3. Share:
-   - Game URL: `https://praktikaal24.github.io/Prictionary/`
+   - Game URL: `https://praktikal24.github.io/Prictionary/`
    - Room code: (6 characters, shown after creation)
    - Password: (your chosen password)
 
@@ -181,7 +181,7 @@ Set up `play.yourdomain.com`:
 2. **In your domain registrar (DNS settings):**
    - Add CNAME record:
      - Name: `play`
-     - Value: `praktikaal24.github.io`
+     - Value: `praktikal24.github.io`
      - TTL: 3600
    - Save and wait 5-30 minutes
 
