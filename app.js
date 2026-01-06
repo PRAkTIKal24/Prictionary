@@ -77,6 +77,20 @@ function setupSocketListeners() {
         console.log('✅ Connected to server! Socket ID:', socket.id);
         gameState.playerId = socket.id;
         showNotification('Connected to server', 'success');
+        
+        // Try to rejoin room if we were in one (for mobile reconnection)
+        const savedRoom = sessionStorage.getItem('currentRoom');
+        const savedName = sessionStorage.getItem('playerName');
+        const savedPassword = sessionStorage.getItem('roomPassword');
+        
+        if (savedRoom && savedName && savedPassword) {
+            console.log('Attempting to rejoin room:', savedRoom);
+            socket.emit('rejoin-room', {
+                roomCode: savedRoom,
+                playerName: savedName,
+                password: savedPassword
+            });
+        }
     });
     
     socket.on('connect_error', (error) => {
@@ -92,6 +106,10 @@ function setupSocketListeners() {
     socket.on('room-created', (data) => {
         gameState.roomCode = data.roomCode;
         gameState.isHost = true;
+        
+        // Save to sessionStorage for reconnection
+        sessionStorage.setItem('currentRoom', data.roomCode);
+        
         showLobbyScreen();
     });
     
@@ -99,6 +117,10 @@ function setupSocketListeners() {
         gameState.players = data.players;
         gameState.host = data.host;
         gameState.isHost = (socket.id === data.host);
+        
+        // Save to sessionStorage for reconnection
+        sessionStorage.setItem('currentRoom', gameState.roomCode);
+        
         updatePlayersList();
         updateScores();
     });
@@ -331,6 +353,10 @@ function createRoom() {
     gameState.playerName = name;
     gameState.category = 'all';
     
+    // Save to sessionStorage for reconnection
+    sessionStorage.setItem('playerName', name);
+    sessionStorage.setItem('roomPassword', password);
+    
     console.log('Creating room with:', { playerName: name, password: '***', category: gameState.category });
     socket.emit('create-room', {
         playerName: name,
@@ -365,6 +391,11 @@ function joinRoom() {
     gameState.playerName = name;
     gameState.roomCode = roomCode;
     
+    // Save to sessionStorage for reconnection
+    sessionStorage.setItem('playerName', name);
+    sessionStorage.setItem('roomPassword', password);
+    sessionStorage.setItem('currentRoom', roomCode);
+    
     socket.emit('join-room', {
         roomCode: roomCode,
         playerName: name,
@@ -394,6 +425,12 @@ function startGame() {
  */
 function leaveRoom() {
     socket.emit('leave-room');
+    
+    // Clear sessionStorage
+    sessionStorage.removeItem('currentRoom');
+    sessionStorage.removeItem('playerName');
+    sessionStorage.removeItem('roomPassword');
+    
     gameState.roomCode = '';
     gameState.players = [];
     gameState.scores = {};
@@ -631,7 +668,7 @@ function updateWordDisplay() {
 }
 
 function updateTimer() {
-    document.getElementById('timer').textContent = `${gameState.timeLeft}s`;
+    document.getElementById('timerDisplay').textContent = gameState.timeLeft;
 }
 
 function addChatMessage(player, message, isCorrect, type = 'guess') {

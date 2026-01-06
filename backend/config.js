@@ -8,7 +8,7 @@ module.exports = {
   // Game settings
   MAX_PLAYERS_PER_ROOM: parseInt(process.env.MAX_PLAYERS_PER_ROOM) || 8,
   ROOM_INACTIVITY_TIMEOUT: parseInt(process.env.ROOM_INACTIVITY_TIMEOUT) || 7200000, // 2 hours
-  PLAYER_TIMEOUT: parseInt(process.env.PLAYER_TIMEOUT) || 120000, // 2 minutes
+  PLAYER_TIMEOUT: parseInt(process.env.PLAYER_TIMEOUT) || 300000, // 5 minutes
   MAX_ROUNDS: parseInt(process.env.MAX_ROUNDS) || 5,
   TURN_DURATION: 90, // seconds
   

@@ -160,6 +160,75 @@ function initializeSocketHandlers(io) {
     });
     
     /**
+     * Rejoin room (for mobile reconnection)
+     */
+    socket.on('rejoin-room', async ({ roomCode, playerName: name, password }) => {
+      try {
+        console.log(`Rejoin attempt: ${name} -> ${roomCode}`);
+        
+        // Reuse join-room logic
+        const room = roomManager.getRoom(roomCode);
+        if (!room) {
+          console.log('Room not found for rejoin');
+          return; // Silently fail, room may have expired
+        }
+        
+        // Verify password
+        const passwordValid = await roomManager.verifyRoomPassword(roomCode, password);
+        if (!passwordValid) {
+          return; // Silently fail
+        }
+        
+        // Check if player was already in the room
+        const existingPlayer = room.players.find(p => p.name === name);
+        
+        if (existingPlayer) {
+          // Update player's socket ID and reconnect
+          existingPlayer.id = socket.id;
+          existingPlayer.connected = true;
+          
+          socket.join(roomCode);
+          currentRoom = roomCode;
+          playerName = name;
+          
+          console.log(`${name} rejoined room: ${roomCode}`);
+          
+          // Send full room state
+          socket.emit('room-joined', roomManager.getRoomInfo(roomCode));
+          
+          // If game is active, send game state
+          if (room.gameState.active) {
+            socket.emit('game-started', {
+              round: room.gameState.round,
+              maxRounds: room.gameState.maxRounds,
+              drawer: room.players[room.gameState.currentDrawer],
+              timeLeft: room.gameState.timeLeft
+            });
+            
+            // Send drawing data
+            if (room.drawingData.length > 0) {
+              socket.emit('drawing-sync', { drawingData: room.drawingData });
+            }
+            
+            // Send word or hint
+            if (room.gameState.currentDrawer === room.players.findIndex(p => p.id === socket.id)) {
+              socket.emit('your-word', { word: room.gameState.currentWord });
+            } else {
+              socket.emit('word-hint', { hint: room.gameState.wordHint || gameManager.generateHint(room.gameState.currentWord, 0) });
+            }
+          }
+          
+          // Notify others
+          socket.to(roomCode).emit('player-joined', {
+            player: { id: socket.id, name: name, score: room.gameState.scores[name] || 0 },
+          });
+        }
+      } catch (error) {
+        console.error('Error rejoining room:', error);
+      }
+    });
+    
+    /**
      * Start the game
      */
     socket.on('start-game', () => {
