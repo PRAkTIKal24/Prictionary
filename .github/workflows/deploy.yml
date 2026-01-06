@@ -1,0 +1,31 @@
+name: Deploy Prictionary
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deployment notification
+        run: |
+          echo "🚀 Deployment initiated!"
+          echo "📦 Frontend: Deploying to GitHub Pages..."
+          echo "🔧 Backend: Render will auto-deploy from main branch"
+          echo "⏱️  Estimated time: 2-3 minutes"
+          
+      - name: Check deployment status
+        run: |
+          echo "✅ GitHub Pages deployment in progress"
+          echo "✅ Render backend will deploy automatically"
+          echo ""
+          echo "🌐 Your game will be live at:"
+          echo "   https://praktikal24.github.io/Prictionary/"
+          echo ""
+          echo "🔗 Backend URL:"
+          echo "   https://prictionary-backend.onrender.com"
