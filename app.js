@@ -684,6 +684,7 @@ function addChatMessage(player, message, isCorrect, type = 'guess') {
         div.style.color = '#28a745';
     } else {
         div.innerHTML = `<strong>${player}:</strong> ${message}`;
+        div.style.color = '#000000';  // Black text for regular guesses
     }
     
     chatMessages.appendChild(div);
