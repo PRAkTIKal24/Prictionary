@@ -36,6 +36,13 @@ A 2/multi-player Pictionary game optimized for mobile devices. Draw and guess wo
 
 ### Local Server (Recommended for Mobile Testing)
 
+**Using the included Node.js server (Recommended):**
+```bash
+npm start
+# or
+node server.js
+```
+
 **Using Python:**
 ```bash
 # Python 3
@@ -45,7 +52,7 @@ python -m http.server 8000
 python -m SimpleHTTPServer 8000
 ```
 
-**Using Node.js:**
+**Using Node.js (npx):**
 ```bash
 npx http-server -p 8000
 ```
@@ -137,6 +144,9 @@ Prictionary/
 ├── styles.css          # Responsive styles and theming
 ├── app.js             # Game logic and UI management
 ├── words.js           # Word lists organized by category
+├── server.js          # Optional Node.js server
+├── package.json       # Node.js package configuration
+├── .gitignore         # Git ignore rules
 ├── README.md          # This file
 └── LICENSE            # Apache 2.0 License
 ```
