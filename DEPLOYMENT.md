@@ -95,7 +95,7 @@ Your game is running locally right now!
    MAX_PLAYERS_PER_ROOM=8
    ROOM_INACTIVITY_TIMEOUT=7200000
    PLAYER_TIMEOUT=120000
-   MAX_ROUNDS=5
+   MAX_ROUNDS=500
    MAX_GUESSES_PER_MINUTE=10
    MAX_ROOM_CREATIONS_PER_HOUR=5
    ```
@@ -109,11 +109,12 @@ Your game is running locally right now!
 
 ### Step 2: Update Frontend Configuration
 
-1. **Edit app.js** - Update BACKEND_URL:
+1. **Edit app.js** - Update the production backend URL (around line 13):
    ```javascript
-   const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-     ? 'http://localhost:3000'
-     : 'https://YOUR-BACKEND-URL.onrender.com';  // <-- Replace with your Render URL
+   // Change this line:
+   return 'https://your-backend-url.onrender.com';
+   // To:
+   return 'https://YOUR-ACTUAL-BACKEND-URL.onrender.com';  // <-- Replace with your Render URL
    ```
 
 2. **Commit the change:**
@@ -212,7 +213,7 @@ Set up `play.yourdomain.com`:
    - Drawer gets a word to illustrate
    - Guessers type guesses in the chat
    - Faster correct guess = more points!
-   - Game continues for 3 rounds
+   - Game continues for up to 500 rounds (essentially infinite)
 
 ---
 
