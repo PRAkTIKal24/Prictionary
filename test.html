@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prictionary Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status {
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .disconnected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #log {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 Prictionary Connection Test</h1>
+    
+    <div id="backendStatus" class="status disconnected">
+        Backend: Disconnected
+    </div>
+    
+    <div id="socketStatus" class="status disconnected">
+        Socket.IO: Disconnected
+    </div>
+    
+    <div class="status info">
+        <strong>Testing:</strong> This page verifies your backend connection
+    </div>
+    
+    <button onclick="testBackend()">Test Backend Health</button>
+    <button onclick="testSocketConnection()">Test Socket Connection</button>
+    <button onclick="clearLog()">Clear Log</button>
+    
+    <h3>Event Log:</h3>
+    <div id="log"></div>
+    
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script>
+        const BACKEND_URL = 'http://localhost:3000';
+        let socket = null;
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'success' ? 'green' : type === 'error' ? 'red' : 'blue';
+            logDiv.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        async function testBackend() {
+            log('Testing backend health endpoint...', 'info');
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    document.getElementById('backendStatus').className = 'status connected';
+                    document.getElementById('backendStatus').textContent = 'Backend: Connected ✓';
+                    log(`Backend health check passed: ${JSON.stringify(data)}`, 'success');
+                } else {
+                    throw new Error('Unexpected response');
+                }
+            } catch (error) {
+                document.getElementById('backendStatus').className = 'status disconnected';
+                document.getElementById('backendStatus').textContent = 'Backend: Disconnected ✗';
+                log(`Backend health check failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function testSocketConnection() {
+            log('Testing Socket.IO connection...', 'info');
+            
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+            }
+            
+            socket = io(BACKEND_URL, {
+                reconnection: true,
+                reconnectionDelay: 1000,
+                reconnectionAttempts: 3,
+            });
+            
+            socket.on('connect', () => {
+                document.getElementById('socketStatus').className = 'status connected';
+                document.getElementById('socketStatus').textContent = 'Socket.IO: Connected ✓';
+                log(`Socket.IO connected! Socket ID: ${socket.id}`, 'success');
+            });
+            
+            socket.on('disconnect', () => {
+                document.getElementById('socketStatus').className = 'status disconnected';
+                document.getElementById('socketStatus').textContent = 'Socket.IO: Disconnected ✗';
+                log('Socket.IO disconnected', 'error');
+            });
+            
+            socket.on('connect_error', (error) => {
+                log(`Socket.IO connection error: ${error.message}`, 'error');
+            });
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            log('Page loaded. Testing connections...', 'info');
+            setTimeout(testBackend, 500);
+            setTimeout(testSocketConnection, 1000);
+        });
+    </script>
+</body>
+</html>
