@@ -298,11 +298,17 @@ function initializeSocketHandlers(io) {
       
       if (!drawer || drawer.id !== socket.id) return;
       
-      // Broadcast to all other players
-      socket.to(currentRoom).emit('drawing-update', data);
-      
-      // Store drawing data
-      gameManager.updateDrawing(room, data);
+      // Data is an array of drawing segments
+      if (Array.isArray(data)) {
+        data.forEach(segment => {
+          socket.to(currentRoom).emit('drawing-update', segment);
+          gameManager.updateDrawing(room, segment);
+        });
+      } else {
+        // Single segment (fallback)
+        socket.to(currentRoom).emit('drawing-update', data);
+        gameManager.updateDrawing(room, data);
+      }
     });
     
     /**

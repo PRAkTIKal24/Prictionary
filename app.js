@@ -30,14 +30,14 @@ let gameState = {
     scores: {},
     round: 1,
     maxRounds: 500,
-    timeLeft: 60,
+    timeLeft: 90,
     gameActive: false,
 };
 
 // Canvas setup
 let canvas, ctx;
 let isDrawing = false;
-let currentColor = '#000000';
+let currentColor = '#013220';  // Default to dark green for dark mode
 let currentSize = 5;
 let currentTool = 'pen';
 let lastPoint = null;
@@ -485,7 +485,7 @@ function drawLine(from, to, color, size, erase) {
     ctx.beginPath();
     ctx.moveTo(from.x, from.y);
     ctx.lineTo(to.x, to.y);
-    ctx.strokeStyle = erase ? '#FFFFFF' : color;
+    ctx.strokeStyle = erase ? '#000000' : color;  // Erase with black for dark mode
     ctx.lineWidth = erase ? size * 2 : size;
     ctx.stroke();
 }
@@ -504,7 +504,8 @@ function drawRemoteLine(data) {
 }
 
 function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#000000';  // Black background for dark mode
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     drawingBuffer = [];
 }
 

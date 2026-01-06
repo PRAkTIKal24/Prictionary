@@ -10,7 +10,7 @@ module.exports = {
   ROOM_INACTIVITY_TIMEOUT: parseInt(process.env.ROOM_INACTIVITY_TIMEOUT) || 7200000, // 2 hours
   PLAYER_TIMEOUT: parseInt(process.env.PLAYER_TIMEOUT) || 120000, // 2 minutes
   MAX_ROUNDS: parseInt(process.env.MAX_ROUNDS) || 5,
-  TURN_DURATION: 60, // seconds
+  TURN_DURATION: 90, // seconds
   
   // Rate limiting
   MAX_GUESSES_PER_MINUTE: parseInt(process.env.MAX_GUESSES_PER_MINUTE) || 10,
