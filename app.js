@@ -10,7 +10,7 @@ const BACKEND_URL = (() => {
         return 'http://localhost:3000';
     }
     // Production (GitHub Pages)
-    return 'https://your-backend-url.onrender.com';
+    return 'https://prictionary-backend.onrender.com';
 })();
 
 // Socket.IO connection
